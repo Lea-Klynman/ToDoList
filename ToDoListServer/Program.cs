@@ -1,16 +1,17 @@
+// 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using TodoApi;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
         Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql")));
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader());
 });
@@ -31,15 +32,16 @@ app.UseCors("AllowAll");
     });
 // }
 
-   
-
-// שליפת כל המשימות
+app.MapGet("/",()=>"AuthServer API is running");
 app.MapGet("/items", async (ToDoDbContext db) =>
+    await db.Items.ToListAsync());
+
+app.MapGet("/items/{id}", async (ToDoDbContext db, int id) =>
 {
-    return await db.Items.ToListAsync();
+    var item = await db.Items.FindAsync(id);
+    return item is not null ? Results.Ok(item) : Results.NotFound();
 });
 
-// הוספת משימה חדשה
 app.MapPost("/items", async (ToDoDbContext db, Item newItem) =>
 {
     db.Items.Add(newItem);
@@ -47,27 +49,28 @@ app.MapPost("/items", async (ToDoDbContext db, Item newItem) =>
     return Results.Created($"/items/{newItem.Id}", newItem);
 });
 
-// עדכון משימה
 app.MapPut("/items/{id}", async (ToDoDbContext db, int id, Item updatedItem) =>
-{
-    var existingItem = await db.Items.FindAsync(id);
-    if (existingItem is null) return Results.NotFound();
-
-    existingItem.IsComplete = updatedItem.IsComplete;
-
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});
-
-// מחיקת משימה
-app.MapDelete("/items/{id}", async (ToDoDbContext db, int id) =>
 {
     var item = await db.Items.FindAsync(id);
     if (item is null) return Results.NotFound();
 
+    item.Name = updatedItem.Name;
+    item.IsComplete = updatedItem.IsComplete;
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+app.MapDelete("/items/{id}", async (ToDoDbContext db, int id) =>
+{
+    var item = await db.Items.FindAsync(id);
+    if (item is null)
+        return Results.NotFound();
+
     db.Items.Remove(item);
     await db.SaveChangesAsync();
     return Results.NoContent();
+
 });
 
 app.Run();
