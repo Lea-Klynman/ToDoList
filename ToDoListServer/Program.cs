@@ -12,12 +12,10 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("https://todolistclient-rpus.onrender.com")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
 });
 
 
@@ -25,7 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowSpecificOrigin");
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -33,8 +31,9 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo API V1");
     c.RoutePrefix = string.Empty; // זה יאפשר לך לגשת ל-Swagger בכתובת הראשית
 });
+app.UseAuthorization();
 
-
+   
 
 // שליפת כל המשימות
 app.MapGet("/items", async (ToDoDbContext db) =>
