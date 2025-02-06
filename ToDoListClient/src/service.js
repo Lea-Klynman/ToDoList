@@ -3,7 +3,7 @@ import axios from 'axios';
 // הגדרת כתובת ה-API כ-default
 const apiUrl = process.env.REACT_APP_API_KEY;
 axios.defaults.baseURL = apiUrl;
-console.log("API URL:", apiUrl);
+
 // הוספת interceptor לטיפול בשגיאות
 axios.interceptors.response.use(
   response => response,
