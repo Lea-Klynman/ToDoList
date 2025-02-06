@@ -3,35 +3,33 @@ using TodoApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// הזרקת ה-DbContext
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("ToDoDB"),
-        new MySqlServerVersion(new Version(8, 0, 0))
-    ));
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
+        Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql")));
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("https://todolistclient-rpus.onrender.com")
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 });
-
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-app.UseCors("AllowSpecificOrigin");
-
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo API V1");
-    c.RoutePrefix = string.Empty; // זה יאפשר לך לגשת ל-Swagger בכתובת הראשית
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ToDo API", Version = "v1" });
 });
-app.UseAuthorization();
+var app = builder.Build();
+app.UseCors("AllowAll");
+// if (app.Environment.IsDevelopment())
+// {
+    app.UseSwagger();
+    app.UseSwaggerUI(options => // UseSwaggerUI is called only in Development.
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+// }
 
    
 
