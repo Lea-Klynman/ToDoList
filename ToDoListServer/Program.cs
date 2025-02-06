@@ -4,9 +4,9 @@ using TodoApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Injecting the DbContext
-builder.Services.AddDbContext<ToDoDbContext>(options =>
+builder.Services.AddDbContext<ToDoDbContext>(/*options =>
     options.UseMySql("name=ToDoDB", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"))
-);
+*/);
 
 builder.Services.AddCors(options =>
 {
