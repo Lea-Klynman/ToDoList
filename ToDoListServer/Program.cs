@@ -44,12 +44,12 @@ var app = builder.Build();
 app.UseCors("AllowAllOrigins");
 
 // Enable Swagger UI
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo API V1");
-    c.RoutePrefix = string.Empty; 
-});
+// app.UseSwagger();
+// app.UseSwaggerUI(c =>
+// {
+//     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo API V1");
+//     c.RoutePrefix = string.Empty; 
+// });
 
 // Define endpoint to get all items
 app.MapGet("/items", async (ToDoDbContext context) =>
