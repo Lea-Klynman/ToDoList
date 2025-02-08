@@ -8,18 +8,18 @@ axios.defaults.baseURL = apiUrl;
 axios.interceptors.response.use(
   response => response,
   error => {
-   // console.error('API Error:', error.response ? error.response.data : error.message);
+    // console.error('API Error:', error.response ? error.response.data : error.message);
     return Promise.reject(error);
   }
 );
 
 export default {
   getTasks: async () => {
-    const result = await axios.get('/items'); 
-    if (Array.isArray(result.data))   
-    return result.data;
-  else
-    return [];
+    const result = await axios.get('/items');
+    if (Array.isArray(result.data))
+      return result.data;
+    else
+      return [];
   },
 
   // addTask: async (name) => {
@@ -27,13 +27,13 @@ export default {
   //   const result = await axios.post('/items', { name });
   //   return result.data;
   // },
-  addTask: async(name)=>{
+  addTask: async (name) => {
     console.log('addTask', name)
-    const result = await axios.post(`/`,{
-      Name:name,
-      IsComplete:false
-    })    
-    return {result};
+    const result = await axios.post(`/`, {
+      Name: name,
+      IsComplete: false
+    })
+    return { result };
   },
   setCompleted: async (id, isComplete) => {
     console.log('setCompleted', { id, isComplete });
