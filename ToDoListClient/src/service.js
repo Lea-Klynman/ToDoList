@@ -26,7 +26,7 @@ export default {
   // },
   addTask: async(name)=>{
     console.log('addTask', name)
-    const result = await axios.post(`/items`,{
+    const result = await axios.post(`/`,{
       Name:name,
       IsComplete:false
     })    
@@ -34,12 +34,12 @@ export default {
   },
   setCompleted: async (id, isComplete) => {
     console.log('setCompleted', { id, isComplete });
-    const result = await axios.put(`/items/${id}`, { isComplete });
+    const result = await axios.put(`/${id}`, { isComplete });
     return result.data;
   },
 
   deleteTask: async (id) => {
     console.log('deleteTask', id);
-    await axios.delete(`/items/${id}`);
+    await axios.delete(`/${id}`);
   }
 };

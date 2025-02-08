@@ -62,18 +62,18 @@ app.MapGet("/items", async (ToDoDbContext context) =>
 app.MapGet("/", () => "ToDo API is running");
 
 // Define endpoint to create a new item
-app.MapPost("/items", async ( Item newItem,ToDoDbContext db) =>
+app.MapPost("/", async ( Item newItem,ToDoDbContext db) =>
 {
     db.Items.Add(newItem);
     await db.SaveChangesAsync();
-    return Results.Created($"/items/{newItem.Id}", newItem);
+    return Results.Created($"/{newItem.Id}", newItem);
 });
 
 
 
 
 // Define endpoint to update an existing item
-app.MapPut("/items/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
+app.MapPut("/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
 {
     var item = await db.Items.FindAsync(id);
     if (item is null) return Results.NotFound();
@@ -84,7 +84,7 @@ app.MapPut("/items/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
 });
 
 // Define endpoint to delete an item
-app.MapDelete("/items/{id}", async (ToDoDbContext db, int id) =>
+app.MapDelete("/{id}", async (ToDoDbContext db, int id) =>
 {
     var item = await db.Items.FindAsync(id);
     if (item is null) return Results.NotFound();
