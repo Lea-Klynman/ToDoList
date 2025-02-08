@@ -98,7 +98,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TodoApi;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Get the connection string for the database
@@ -158,7 +157,7 @@ app.MapGet("/items", async (ToDoDbContext context) =>
 app.MapGet("/", () => "ToDo API is running");
 
 // Define endpoint to create a new item
-app.MapPost("/items", async (ToDoDbContext db, Item newItem) =>
+app.MapPost("", async (ToDoDbContext db, Item newItem) =>
 {
     db.Items.Add(newItem);
     await db.SaveChangesAsync();
@@ -166,7 +165,7 @@ app.MapPost("/items", async (ToDoDbContext db, Item newItem) =>
 });
 
 // Define endpoint to update an existing item
-app.MapPut("/items/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
+app.MapPut("/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
 {
     var item = await db.Items.FindAsync(id);
     if (item is null) return Results.NotFound();
@@ -177,7 +176,7 @@ app.MapPut("/items/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
 });
 
 // Define endpoint to delete an item
-app.MapDelete("/items/{id}", async (ToDoDbContext db, int id) =>
+app.MapDelete("/{id}", async (ToDoDbContext db, int id) =>
 {
     var item = await db.Items.FindAsync(id);
     if (item is null) return Results.NotFound();

@@ -69,13 +69,13 @@ export default {
 
   addTask: async (name) => {
     console.log('addTask', name);
-    await axios.post('/items', { name: name, isComplete: false });
+    await axios.post('', { name: name, isComplete: false });
 
   },
   setCompleted: async (id, isComplete) => {
     try {
       console.log('setCompleted', { id, isComplete });
-      const result = await axios.put(`/items/${id}`, { isComplete });
+      const result = await axios.put(`/${id}`, { isComplete });
       return result.data;
     } catch (error) {
       console.error('Failed to update task:', error);
@@ -84,7 +84,7 @@ export default {
   },
 
   deleteTask: async (id) => {
-    await axios.delete(`/items/${id}`);
+    await axios.delete(`/${id}`);
   }
 };
 
