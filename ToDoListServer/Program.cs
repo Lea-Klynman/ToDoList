@@ -14,15 +14,22 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 );
 
 // Configure CORS to allow all origins
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowAllOrigins",
+//         builder =>
+//         {
+//             builder.AllowAnyOrigin()
+//                    .AllowAnyMethod()
+//                    .AllowAnyHeader();
+//         });
+// });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowSpecificOrigin",
+        policy => policy.WithOrigins("https://todolistclient-rpus.onrender.com")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
 });
 
 
@@ -41,7 +48,8 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Use CORS policy before any other middleware that handles requests
-app.UseCors("AllowAllOrigins");
+// app.UseCors("AllowAllOrigins");
+app.UseCors("AllowSpecificOrigin");
 
 // Enable Swagger UI
 // app.UseSwagger();
