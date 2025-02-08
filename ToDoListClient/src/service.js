@@ -43,7 +43,7 @@
 // };
 import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_KEY;
 
 console.log('Using API URL:', apiUrl);
 axios.defaults.baseURL = apiUrl;
