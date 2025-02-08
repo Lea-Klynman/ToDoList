@@ -13,24 +13,6 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"))
 );
 
-// Configure CORS to allow all origins
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowAllOrigins",
-//         builder =>
-//         {
-//             builder.AllowAnyOrigin()
-//                    .AllowAnyMethod()
-//                    .AllowAnyHeader();
-//         });
-// });
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowSpecificOrigin",
-//         policy => policy.WithOrigins("https://todolistclient-rpus.onrender.com")
-//                         .AllowAnyMethod()
-//                         .AllowAnyHeader());
-// });
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
@@ -57,8 +39,7 @@ var app = builder.Build();
 
 // Use CORS policy before any other middleware that handles requests
 app.UseCors(MyAllowSpecificOrigins);
-// app.UseCors("AllowAllOrigins");
-// app.UseCors("AllowSpecificOrigin");
+
 
 // Enable Swagger UI
 // app.UseSwagger();

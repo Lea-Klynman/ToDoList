@@ -22,11 +22,6 @@ export default {
       return [];
   },
 
-  // addTask: async (name) => {
-  //   console.log('addTask', name);
-  //   const result = await axios.post('/items', { name });
-  //   return result.data;
-  // },
   addTask: async (name) => {
     console.log('addTask', name)
     const result = await axios.post(``, {
