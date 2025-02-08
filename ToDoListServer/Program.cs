@@ -62,12 +62,15 @@ app.MapGet("/items", async (ToDoDbContext context) =>
 app.MapGet("/", () => "ToDo API is running");
 
 // Define endpoint to create a new item
-app.MapPost("/items", async (ToDoDbContext db, Item newItem) =>
+app.MapPost("/items", async ( Item newItem,ToDoDbContext db) =>
 {
     db.Items.Add(newItem);
     await db.SaveChangesAsync();
     return Results.Created($"/items/{newItem.Id}", newItem);
 });
+
+
+
 
 // Define endpoint to update an existing item
 app.MapPut("/items/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
