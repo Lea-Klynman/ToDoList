@@ -75,7 +75,7 @@ app.MapPost("/", async ( Item newItem,ToDoDbContext db) =>
     db.Items.Add(newItem);
     Console.WriteLine($"Received: {newItem.Name}, {newItem.IsComplete}");
     await db.SaveChangesAsync();
-    return Results.Created($"/{newItem.Id}", newItem);
+    return Results.Created($"/items/{newItem.Id}", newItem);
 });
 
 
