@@ -27,16 +27,16 @@ builder.Services.AddCors(options =>
 
 
 // Add services for Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "ToDo API",
-        Version = "v1",
-        Description = "A simple ToDo API to manage tasks."
-    });
-});
+// builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddSwaggerGen(options =>
+// {
+//     options.SwaggerDoc("v1", new OpenApiInfo
+//     {
+//         Title = "ToDo API",
+//         Version = "v1",
+//         Description = "A simple ToDo API to manage tasks."
+//     });
+// });
 
 var app = builder.Build();
 
